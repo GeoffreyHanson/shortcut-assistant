@@ -1,30 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.js</code>
-          {' '}
-and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.input = React.createRef();
+    this.state = {
+      input: '',
+    };
+  }
+
+  componentDidMount() {
+    this.onLoadFocusInput();
+  }
+
+  componentDidUpdate() {
+    this.onLoadFocusInput();
+  }
+
+  onLoadFocusInput = () => {
+    this.input.current.focus();
+    console.log('Focused!');
+  }
+
+  onKeyDown = (event) => {
+    console.log(event);
+    // console.log(key);
+  }
+
+  render() {
+    const { input } = this.state;
+    return (
+      <div className="App">
+        <div className="inputDiv">{input}</div>
+        <input
+          type="text"
+          ref={this.input}
+          // value={input}
+          onKeyDown={(event) => this.onKeyDown(event)}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
