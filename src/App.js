@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import KeyRecognition from './components/KeyRecognition/KeyRecognition';
 
 class App extends Component {
   constructor(props) {
@@ -6,6 +7,9 @@ class App extends Component {
     this.input = React.createRef();
     this.state = {
       input: '',
+      shortcuts: {
+        testName: 'Shift', 
+      },
     };
   }
 
@@ -23,12 +27,13 @@ class App extends Component {
   }
 
   onKeyDown = (event) => {
-    console.log(event);
+    console.log(event.key);
     // console.log(key);
+    this.setState({ input: event.key });
   }
 
   render() {
-    const { input } = this.state;
+    const { input, shortcuts } = this.state;
     return (
       <div className="App">
         <div className="inputDiv">{input}</div>
@@ -37,6 +42,10 @@ class App extends Component {
           ref={this.input}
           // value={input}
           onKeyDown={(event) => this.onKeyDown(event)}
+        />
+        <KeyRecognition
+          input={input}
+          shortcuts={shortcuts}
         />
       </div>
     );
