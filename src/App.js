@@ -7,8 +7,10 @@ class App extends Component {
     this.input = React.createRef();
     this.state = {
       input: '',
+      inputCount: 0,
       shortcuts: {
-        testName: 'Shift', 
+        cut: 'Controlc',
+        paste: 'Controlv',
       },
     };
   }
@@ -27,15 +29,47 @@ class App extends Component {
   }
 
   onKeyDown = (event) => {
-    console.log(event.key);
-    // console.log(key);
-    this.setState({ input: event.key });
+    const { input, shortcuts } = this.state;
+    let { inputCount } = this.state;
+    console.log(`input: ${input}`);
+
+    // add to key count
+    // check if total key count is at max
+    // if it is at the max, clear key count and keys pressed
+
+    // input key
+    const { key } = event; // Control // c
+    let keysPressed = input + key; // Control // Controlc
+
+    if (inputCount >= 2) {
+      keysPressed = '';
+      inputCount = 0;
+    }
+
+    inputCount += 1; // 1 // 2
+    console.log(inputCount);
+    console.log(key);
+
+    if (keysPressed === shortcuts.cut) {
+      console.log('Correct!');
+    }
+
+
+    this.setState({
+      input: keysPressed,
+      inputCount,
+    });
   }
 
   render() {
-    const { input, shortcuts } = this.state;
+    const {
+      input,
+      // inputCount,
+      shortcuts,
+    } = this.state;
     return (
       <div className="App">
+        <div>{shortcuts.cut}</div>
         <div className="inputDiv">{input}</div>
         <input
           type="text"
@@ -43,10 +77,11 @@ class App extends Component {
           // value={input}
           onKeyDown={(event) => this.onKeyDown(event)}
         />
-        <KeyRecognition
+        {/* <KeyRecognition
           input={input}
+          inputCount={inputCount}
           shortcuts={shortcuts}
-        />
+        /> */}
       </div>
     );
   }
