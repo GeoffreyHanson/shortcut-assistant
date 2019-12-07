@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// NOT IN USE
+// Should recognize the text in the shortcuts as the keys pressed
+
 // This should purely represent the result of the onKeyDown function.
 const KeyRecognition = (props) => {
   const { input, shortcuts } = props;
