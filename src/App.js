@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import KeyRecognition from './components/KeyRecognition/KeyRecognition';
+// import KeyRecognition from './components/KeyRecognition/KeyRecognition';
 
 class App extends Component {
   constructor(props) {
@@ -7,8 +7,11 @@ class App extends Component {
     this.input = React.createRef();
     this.state = {
       input: '',
+      inputCount: 0,
+      termCounter: 0,
       shortcuts: {
-        testName: 'Shift', 
+        cut: 'Controlc',
+        paste: 'Controlv',
       },
     };
   }
@@ -27,26 +30,70 @@ class App extends Component {
   }
 
   onKeyDown = (event) => {
-    console.log(event.key);
-    // console.log(key);
-    this.setState({ input: event.key });
+    const { input, shortcuts } = this.state;
+    let { termCounter, inputCount } = this.state;
+
+    // input key
+    const { key } = event; // Control // c
+    let keysPressed = input + key; // Control // Controlc
+
+    // Counting the amount of inputs made
+    inputCount += 1; // 1 // 2
+
+    // Logging various information
+    console.log(`Keys pressed: ${inputCount}`);
+    console.log(key);
+    console.log(Object.values(shortcuts)[termCounter]);
+    console.log(`Term count: ${termCounter}`);
+    console.log(`input: ${keysPressed}`);
+
+    const shortcut = Object.values(shortcuts)[termCounter];
+
+    if ((inputCount === 2) && (keysPressed === shortcut)) {
+      console.log('Correct');
+      // Change color of text to green for 1 second.
+      termCounter += 1;
+    } else if ((inputCount === 2) && (keysPressed !== shortcut)) {
+      console.log('You failed!');
+    }
+
+    if (inputCount >= 2) {
+      keysPressed = '';
+      inputCount = 0;
+      console.log('Reset!');
+    }
+
+    this.setState({
+      input: keysPressed,
+      inputCount,
+      termCounter,
+    });
   }
 
   render() {
-    const { input, shortcuts } = this.state;
+    const {
+      input,
+      // inputCount,
+      termCounter,
+      shortcuts,
+    } = this.state;
     return (
       <div className="App">
+        <div />
+        {/* Displaying the shortcut to press */}
+        <div className="shortcutPrompt">{Object.values(shortcuts)[termCounter]}</div>
         <div className="inputDiv">{input}</div>
         <input
           type="text"
           ref={this.input}
-          // value={input}
+          value={input}
           onKeyDown={(event) => this.onKeyDown(event)}
         />
-        <KeyRecognition
+        {/* <KeyRecognition
           input={input}
+          inputCount={inputCount}
           shortcuts={shortcuts}
-        />
+        /> */}
       </div>
     );
   }
